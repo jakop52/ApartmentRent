@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ApartmentRent</string>
+    <string name="usernameOrEmail">Email</string>
+    <string name="password">Password</string>
+    <string name="loginDTO">Login</string>
+    <string name="incorrectLoginOrPassword">Login or Password is incorrect</string>
+    <string name="register">Register</string>
+    <string name="name">Name</string>
 </resources>

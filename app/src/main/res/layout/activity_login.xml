@@ -5,5 +5,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.LoginActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            tools:ignore="MissingConstraints">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_launcher"
+                android:foregroundGravity=""/>
+
+            <EditText
+                android:layout_marginTop="60dp"
+                android:id="@+id/editTextUsernameOrEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/usernameOrEmail"
+                android:inputType="textPersonName"
+                android:layout_centerHorizontal="true"/>
+
+            <EditText
+                android:layout_below="@id/editTextUsernameOrEmail"
+                android:id="@+id/editTextTextPassword"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:layout_centerHorizontal="true"/>
+
+            <RelativeLayout
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/editTextTextPassword">
+
+                <Button
+                    style="@style/Theme.AppCompat.DayNight"
+                    android:id="@+id/buttonLogin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onLoginButtonClick"
+                    android:text="@string/loginDTO" />
+                <Button
+                    android:layout_marginTop="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buttonLogin"
+                    android:onClick="onRegisterButtonClick"
+                    android:id="@+id/buttonRegister"
+                    android:text="@string/register"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
