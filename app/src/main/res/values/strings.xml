@@ -6,4 +6,7 @@
     <string name="incorrectLoginOrPassword">Login or Password is incorrect</string>
     <string name="register">Register</string>
     <string name="name">Name</string>
+    <string name="rented_apartments">Rented apartments</string>
+    <string name="owned_apartments">Owned apartments</string>
+    <string name="search_apartment">Search apartment</string>
 </resources>

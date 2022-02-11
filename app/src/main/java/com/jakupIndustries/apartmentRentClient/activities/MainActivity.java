@@ -1,9 +1,6 @@
 package com.jakupIndustries.apartmentRentClient.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,25 +12,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jakupIndustries.apartmentRentClient.ApiClient;
 import com.jakupIndustries.apartmentRentClient.Cookie;
 import com.jakupIndustries.apartmentRentClient.R;
-import com.jakupIndustries.apartmentRentClient.adapters.ApartmentsAdapter;
-import com.jakupIndustries.apartmentRentClient.interfaces.IClickListener;
-import com.jakupIndustries.apartmentRentClient.models.Apartment;
 import com.jakupIndustries.apartmentRentClient.models.User;
 import com.jakupIndustries.apartmentRentClient.services.ApartmentRentService;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
     private ApartmentRentService apartmentRentService;
-    private TextView textViewHello;
-    private RecyclerView apartmentsRecyclerView;
-    private ApartmentsAdapter apartmentsAdapter;
-    private ArrayList<Apartment> apartmentsArrayList;
+    private TextView textViewHello, ownedAmountTextView, rentedAmountTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,32 +31,10 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
         }
 
-        //TODO RENTED AND OWNED APARTMENT LISTING
-
-        apartmentsArrayList = new ArrayList<Apartment>();
         textViewHello = (TextView) findViewById(R.id.textViewHello);
+        ownedAmountTextView = (TextView) findViewById(R.id.textViewOwnedAmount);
+        rentedAmountTextView =(TextView)findViewById(R.id.textViewRentedAmount);
         apartmentRentService = ApiClient.getClient().create(ApartmentRentService.class);
-
-        apartmentsAdapter = new ApartmentsAdapter(apartmentsArrayList);
-        apartmentsRecyclerView = (RecyclerView)findViewById(R.id.ownedApartmentsRecycleView);
-        apartmentsRecyclerView.setHasFixedSize(true);
-        apartmentsRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        apartmentsRecyclerView.setItemAnimator(new DefaultItemAnimator());
-        apartmentsRecyclerView.setAdapter(apartmentsAdapter);
-
-        apartmentsAdapter.setOnItemClickListener(new IClickListener<Apartment>() {
-            @Override
-            public void onClick(View view, Apartment data, int position) {
-                Intent intent = new Intent(MainActivity.this, ApartmentDetailsActivity.class);
-                intent.putExtra("apartmentID",data.getId());
-                startActivity(intent);
-            }
-        });
-
-
-
-
-
         refreshView();
     }
 
@@ -79,12 +45,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 try {
-                    User loggedUser = new User(response.body());
-                    textViewHello.setText("Hello \n"+loggedUser.getName());
+                    Cookie.loggedUser = new User(response.body());
+                    textViewHello.setText("Hello \n"+Cookie.loggedUser.getName());
 
-                    //apartmentsArrayList = loggedUser.getOwnedApartments();
-                    apartmentsArrayList.addAll(loggedUser.getOwnedApartments());
-                    apartmentsAdapter.notifyDataSetChanged();
+                    ownedAmountTextView.setText(String.valueOf(Cookie.loggedUser.getOwnedApartments().size()));
+                    rentedAmountTextView.setText(String.valueOf(Cookie.loggedUser.getRentedApartments().size()));
+
+
 
                     if (response.code() == 401) {
                         Cookie.cookie = "";
@@ -128,5 +95,22 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("Cookie", Cookie.cookie);
         editor.apply();
         Log.d("COOKIE:", "COOKIE SAVED");
+    }
+
+    public void onOwnedClick(View view) {
+        Intent intent = new Intent(MainActivity.this, ApartmentListActivity.class);
+        intent.putExtra("TYPE","OWNED");
+        startActivity(intent);
+    }
+
+    public void onRentedClick(View view) {
+        Intent intent = new Intent(MainActivity.this, ApartmentListActivity.class);
+        intent.putExtra("TYPE","RENTED");
+        startActivity(intent);
+    }
+
+    public void onSearchClick(View view) {
+        Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+        startActivity(intent);
     }
 }
